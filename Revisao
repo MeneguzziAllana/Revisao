@@ -1,0 +1,80 @@
+#include <stdio.h>
+
+typedef struct{
+  char nome[100];
+}tarefa;
+
+int selecionar_opcao(){
+  int opcao;
+  printf("\nSelecione o que deseja:\n 1- Adicionar nova tarefa\n 2- Listar todas as tarefas\n 3- Excluir tarefa\n 4- Sair\n");
+  scanf("%i", &opcao);
+  return opcao;
+}
+
+void adicionar_tarefa(tarefa a[], int *cont) {
+  if (*cont < 100){
+    printf("\nDigite o nome da tarefa: \n");
+    scanf("%s", a[*cont].nome);
+    (*cont)++;
+    printf("\n--- Tarefa adicionada com sucesso! ---\n");
+  }else{
+    printf("\n--- Limite de tarefas atingido! ---\n");
+  }
+}
+
+void listar_tarefas(tarefa a[], int cont) {
+  if (cont > 0) {
+    printf("\n--- Lista de tarefas ---\n");
+    for (int i = 0; i < cont; i++) {
+      printf("\nTarefa número %i: %s\n", i+1, a[i].nome);
+    }
+  }else{
+    printf("\n--- Ainda não há tarefas na lista! ---\n");
+  }
+}
+
+void excluir_tarefa(tarefa a[], int *cont) {
+  int num_tarefa;
+  if (*cont > 0){
+        
+    for (int i = 0; i < *cont; i++) {
+      printf("\nTarefa número %i: %s\n", i+1, a[i].nome);
+    }
+    printf("\nDigite o número da tarefa que deseja excluir:\n");
+    scanf("%i", &num_tarefa);
+
+    if (num_tarefa >= 1 && num_tarefa <= *cont) {
+      for (int i = num_tarefa - 1; i < *cont - 1; i++) {
+        a[i] = a[i + 1];
+      }
+      (*cont)--;
+      printf("\n--- Tarefa removida com sucesso! ---\n");
+    }else{
+      printf("\n--- Número de tarefa inválido! ---\n");
+    }
+  }else{
+    printf("\n--- Não há tarefas para excluir! ---\n");
+  }
+}
+
+int main(void) {
+  int opcao, cont=0;
+  tarefa a[100];
+  
+  while(1){
+    opcao = selecionar_opcao();
+    if (opcao == 1){
+      adicionar_tarefa(a, &cont);
+    } else if (opcao == 2){
+      listar_tarefas(a, cont);
+    } else if (opcao == 3){
+      excluir_tarefa(a, &cont);
+    } else if (opcao == 4){
+      printf("\n--- Saindo do programa. Até mais! ---\n");
+      break;
+    } else {
+      printf("\n--- Opção inválida! ---\n");
+    }
+  }
+  return 0;
+}
